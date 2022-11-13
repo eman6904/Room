@@ -1,6 +1,7 @@
 package com.example.roomdatabase.databaseitems
 
 import android.content.Context
+import android.util.Log
 import com.example.roomdatabase.adapter.PostsAdapter
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
@@ -9,12 +10,14 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 
- class DatabaseFunctions(context: Context) {
+class DatabaseFunctions(context: Context) {
 
-     val postsDatabase = PostsDatabase.getDatabase(context)
+    private val TAG = "DatabaseFunctions"
+
+    val postsDatabase = PostsDatabase.getDatabase(context)
 
     fun insertData(title: String, body: String) {
-        postsDatabase.postDao().insert(Post(2, 12, title, body))
+        postsDatabase.postDao().insert(Post(0, 12, title, body))
             .subscribeOn(Schedulers.computation())
             .subscribe(object : CompletableObserver {
                 override fun onSubscribe(d: Disposable) {}
@@ -24,8 +27,7 @@ import io.reactivex.schedulers.Schedulers
     }
 
     fun getData(): PostsAdapter {
-
-        lateinit var adapter: PostsAdapter
+        val adapter = PostsAdapter()
         postsDatabase.postDao().getPosts()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
@@ -33,6 +35,8 @@ import io.reactivex.schedulers.Schedulers
                 override fun onSubscribe(d: Disposable) {}
                 override fun onError(e: Throwable) {}
                 override fun onSuccess(posts: List<Post>) {
+                    Log.i(TAG, posts.toString())
+
                     adapter.setPosts(posts)
                     adapter.notifyDataSetChanged()
                 }

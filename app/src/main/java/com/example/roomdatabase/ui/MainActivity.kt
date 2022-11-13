@@ -15,16 +15,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.title = ""
         supportActionBar?.hide()
-        val databaseFunctions= DatabaseFunctions(this)
-       binding.insertButton.setOnClickListener()
-       {
-           val title=binding.editTexttitle.text.toString()
-           val body=binding.editTextBody.text.toString()
-           databaseFunctions.insertData(title,body)
-       }
-        binding.getButton.setOnClickListener()
-        {
-            val adapter=databaseFunctions.getData()
+        val databaseFunctions = DatabaseFunctions(this)
+        binding.insertButton.setOnClickListener {
+            val title = binding.editTexttitle.text.toString()
+            val body = binding.editTextBody.text.toString()
+            databaseFunctions.insertData(title, body)
+        }
+        binding.getButton.setOnClickListener {
+            val adapter = databaseFunctions.getData()
             binding.postsRecyclerView.layoutManager = LinearLayoutManager(this)
             binding.postsRecyclerView.adapter = adapter
         }

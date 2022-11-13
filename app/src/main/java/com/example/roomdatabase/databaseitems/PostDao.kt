@@ -8,9 +8,10 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
-public interface PostDao {
+interface PostDao {
     @Insert
-    fun insert(post: Post):Completable
+    fun insert(post: Post): Completable
+
     @Query("select * from posts_table")//to return all posts in table==(note)-->each row in table is post
-    fun getPosts():Single<List<Post>>
+    fun getPosts(): Single<List<Post>>
 }
